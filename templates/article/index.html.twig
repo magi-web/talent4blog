@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+
+{% block body %}
+    <h1>Article index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>State</th>
+                <th>Published At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.title }}</td>
+                <td>{{ article.content[:10]|raw }}</td>
+                <td>{{ article.state }}</td>
+                <td>{{ article.publishedAt is null ? '-' : article.publishedAt|date('d-m-Y H:i:s') }}</td>
+                <td>
+                    <a href="{{ path('article_show', {'slug': article.slug}) }}">{{ 'show'|trans }}</a>
+                    <a href="{{ path('article_edit', {'id': article.id}) }}">{{ 'edit'|trans }}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">{{ 'no_records'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ knp_pagination_render(articles) }}
+
+    <a href="{{ path('article_new') }}">{{ 'new'|trans }}</a>
+{% endblock %}
