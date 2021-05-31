@@ -25,6 +25,7 @@
     </head>
     <body>
         <main class="container">
+            {% if app.user %}You are logged in as {{ app.user.username }} <a href="{{ path('app_logout') }}">Logout</a>{% endif %}
             {% block body %}My content{% endblock %}
         </main>
     </body>

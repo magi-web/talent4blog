@@ -82,6 +82,11 @@ class Article
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->state = static::STATE_DRAFT;
@@ -166,5 +171,17 @@ class Article
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

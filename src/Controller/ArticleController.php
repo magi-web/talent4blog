@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -17,14 +18,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/article")
+ * @Route("/article", name="article_")
+ * @IsGranted("ROLE_USER")
  */
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/", name="article_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(
         Request $request,
@@ -43,7 +46,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="article_new", methods={"GET","POST"})
+     * @Route("/new", name="new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -52,6 +55,10 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
+            $user = $this->getUser();
+
+            $article->setUser($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
@@ -66,7 +73,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="article_show", methods={"GET"})
+     * @Route("/{slug}", name="show", methods={"GET"})
      */
     public function show(Article $article): Response
     {
@@ -76,7 +83,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="article_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Article $article): Response
     {
@@ -96,7 +103,8 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="article_delete", methods={"POST"})
+     * @Route("/{id}", name="delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Article $article): Response
     {
