@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Article
 {
-    public const STATE_DRAFT = 'DRAFT';
-    public const STATE_PUBLISHED = 'PUBLISHED';
-    public const STATE_ARCHIVED = 'ARCHIVED';
+    public const STATE_DRAFT = 'draft';
+    public const STATE_PUBLISHED = 'published';
+    public const STATE_ARCHIVED = 'archived';
 
     /**
      * @ORM\Id

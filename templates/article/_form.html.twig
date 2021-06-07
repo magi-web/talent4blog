@@ -1,4 +1,14 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
+
+    <div id="article-state">
+        <label for="state">{{ 'state'|trans }}</label>
+        <select id="state" name="state" class="form-control">
+            <option value="{{ article.state }}" selected="selected">{{ article.state|trans }}</option>
+            {% for transition in workflow_transitions(article, 'article') %}
+                <option value="{{ transition.name }}">{{ transition.name|trans }}</option>
+            {% endfor %}
+        </select>
+    </div>
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

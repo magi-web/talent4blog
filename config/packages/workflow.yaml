@@ -1,0 +1,23 @@
+framework:
+    workflows:
+        article:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports: App\Entity\Article
+            initial_marking: draft
+            places:
+                - draft
+                - published
+                - archived
+            transitions:
+                published:
+                    from: draft
+                    to: published
+                archived:
+                    from: [published, draft]
+                    to: archived
+                draft:
+                    from: published
+                    to: draft

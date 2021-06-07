@@ -22,13 +22,13 @@ class ArticleType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
-            ->add('state', ChoiceType::class, [
+            /*->add('state', ChoiceType::class, [
                 'choices' => [
                     'Brouillon' => Article::STATE_DRAFT,
                     'Publié' => Article::STATE_PUBLISHED,
                     'Archivé' => Article::STATE_ARCHIVED,
                 ]
-            ])
+            ])*/
         ;
     }
 
